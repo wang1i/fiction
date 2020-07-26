@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="copyright" content="本页版权 www.zongheng.com 纵横中文网所有。All Rights Reserved"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="https://static.zongheng.com/favicon.ico"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>小说_小说推荐_好看的完本免费小说推荐- 纵横中文网</title>
+    <meta name="keywords" content="书库，热门小说书库，连载小说书库，全本小说书库，书库更新列表，纵横中文网书库。"/>
+    <meta name="description" content="纵横中文网小说书库，提供最新小说在线阅读，最新小说TXT下载，经典完本小说，包括奇幻小说，玄幻小说，言情小说，都市小说等各类小说尽在纵横中文网小说书库。"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/basic.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/search.min.css}"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}"/>
+
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+
+    <script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>
+</head>
+<body>
+<div class="wrap">
+    <div class="head">
+        <div class="head-top clearfix">
+            <div class="logo imgbox fl">
+                <a th:href="@{/index}"><img th:src="@{/picture/logo.png}" alt="logo"></a>
+            </div>
+            <form id="commSearch" name="searchForm" method="get" th:action="@{/search}" target="_blank">
+                <div class="search-box fl" data-hook="searchSuggest">
+                    <label>
+                        <input class="search-text fl" name="fictionName" type="text"
+                               placeholder="请输入书名" />
+                    </label>
+                    <input type="submit" class="search-btn fr"/>
+                </div>
+            </form>
+            <div class="right-wrap-login ud_userTox" style="right: 0">
+                <div class="unlogin ud_unlogin clearfix">
+                    <div th:if="${session.username==null}" class="login fl"><a class="user_login layui-icon" th:href="@{/login}">&#xe66f;登录</a></div>
+                    <div th:if="${session.username==null}" class="regist fl"><a class="user_register layui-icon" th:href="@{/signin}">&#xe672;注册</a></div>
+                    <div th:if="${session.username!=null}" class="shelf">
+                        <a th:href="@{/shelf}" class="layui-icon" target="_blank">&#xe705;书架</a>
+                        <a style="padding-left: 18px;" class="layui-icon" th:href="@{/logout}">&#x1006;注销</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="h10-blank"></div>
+    <!-- 1.	书库头部广告位 -->
+    <div class="h20-blank"></div>
+    <!-- 搜索主内容 -->
+    <div class="h10-blank"></div>
+    <div class="search-html-box clearfix">
+        <div class="search-main fl">
+            <div class="search-nav">
+                <a href=""><span class="active">默认</span></a>
+            </div>
+            <div th:each="item : ${list}"  class="search-tab">
+                <div class="search-result-list clearfix">
+                    <div class="imgbox fl se-result-book">
+                        <a th:href="'/fiction/chapter/info/'+${item.id}" target="_blank">
+                            <img style="width: 100px; height: 132px"  th:src="${item.imgUrl}" src=""  alt="">
+                        </a>
+                    </div>
+                    <div class="fl se-result-infos">
+                        <h2 class="tit"><a th:href="'/fiction/chapter/info/'+${item.id}" target="_blank" ><font color="RED" th:text="${item.fictionName}"></font></a></h2>
+
+                        <div class="bookinfo">
+                            <a  th:text="${item.author}" href="" target="_blank" >烽火戏诸侯</a>
+                            <em>|</em><a  th:href="${item.state}" href=""  target="_blank" >奇幻玄幻</a>
+                            <em>|</em><span th:text="${item.state}" >完结</span>
+                            <em>|</em><span>4615729字</span></div>
+                        <p><font th:text="${item.brief}" color="RED">中</font></p>
+                        <div th:text="${item.type}" class="key-word">关键词：烽火戏诸侯 热血 玄幻 修真
+                        </div>
+                    </div>
+                    <div class="btn">
+                        <a  th:href="'/fiction/chapter/info/'+${item.id}"  target="_blank" class="bkinfo">书籍详情</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="search-side fr">
+            <div class="search-side-con">
+                <div class="se-side-tit">大家都在搜</div>
+                <div hidden class="se-side-cell clearfix" data-bookId="325639">
+                    <div class="imgbox fl se-side-book">
+                        <a href="" target="_blank">
+                            <img src="" alt="">
+                        </a>
+                    </div>
+                    <div class="se-side-info fl">
+                        <div class="bookname"><a href="" target="_blank">星辰之主</a></div>
+                        <div class="bookinfo"><a href="" target="_blank">减肥专家</a><em>|</em><a href="" target="_blank">科幻游戏</a></div>
+                        <p class="b-infos">世纪之交，人类懵懂着踏入星空，就此暴露在诸神的视线之下。少年罗南背负着祖父的罪孽，走出实验室，且看他：
+                            高举燃烧的笔记，脚踏诸神的尸骨；
+                            书写万物的格式，增删宇宙的星图。
+                            当知：万物皆备于我；必信：吾心即是宇宙。
+                            书友群：474391549</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="copyright">
+        <div class="links"><a href="" target="_blank">关于纵横</a>|
+            <a href="" target="_blank">诚聘英才</a>|
+            <a href="" target="_blank">商务合作</a>|
+            <a href="" target="_blank">法律声明</a>|
+            <a href="" target="_blank">帮助中心</a>|
+            <a href="" target="_blank">作者投稿</a>|
+            <a href="" target="_blank">联系我们</a>|
+            <a href="" target="_blank">友情链接</a>|
+            <a href="" target="_blank">谨防诈骗</a>|
+            <a href="" target="_blank">网站地图</a></div>
+        <p>Copyright©<a href="">www.zongheng.com</a>All Rights Reserved 版权所有
+            北京幻想纵横网络技术有限公司
+            <a href="" target="_blank">京ICP证080527号</a>
+            <a href="" target="_blank">京ICP备11009265号</a>
+            <a href="" target="_blank">京网文[2018]10695-962号</a></p>
+        <p>
+            <a href="" target="_blank">新出发京零字第朝130010号</a> 丨
+            统一社会信用代码91110105678221683F 丨
+            <a href="" target="_blank">京公网安备
+                11010502030124号</a> 丨
+            <a href="" target="_blank">公安部网络违法犯罪举报网站</a>
+        </p>
+        <p><a href="" target="_blank">纵横小说网</a>,提供<a
+                href="" target="_blank">玄幻小说</a>,<a href=""
+                                                    target="_blank">都市小说</a>,<a
+                href="">言情小说</a>等<a
+                href="" target="_blank">免费小说</a>阅读。作者发布小说作品时，请遵守国家互联网信息管理办法规定。
+        </p>
+        <p>本站所收录小说作品、社区话题、书库评论均属其个人行为，不代表本站立场。</p>
+    </div>
+</div>
+</body>
+</html>

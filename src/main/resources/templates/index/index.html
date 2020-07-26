@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="copyright" content="本页版权 www.zongheng.com 纵横中文网所有。All Rights Reserved"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="https://static.zongheng.com/favicon.ico"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>小说_小说推荐_好看的完本免费小说推荐</title>
+    <meta name="keywords" content="书库，热门小说书库，连载小说书库，全本小说书库，书库更新列表，纵横中文网书库。"/>
+    <meta name="description" content="纵横中文网小说书库，提供最新小说在线阅读，最新小说TXT下载，经典完本小说，包括奇幻小说，玄幻小说，言情小说，都市小说等各类小说尽在纵横中文网小说书库。"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/basic.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/store.min.css}"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.min.css}"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}"/>
+
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <style>
+        a {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="head">
+        <div class="head-top clearfix">
+            <div class="logo imgbox fl">
+                <a th:href="@{/index}"><img th:src="@{/picture/logo.png}" alt="logo"  src=""></a>
+            </div>
+            <form id="commSearch" name="searchForm" method="get" th:action="@{/search}" target="_blank">
+                <div class="search-box fl" data-hook="searchSuggest">
+                    <label>
+                        <input class="search-text fl" name="fictionName" type="text"
+                               placeholder="请输入书名"/>
+                    </label>
+                    <input type="submit" class="search-btn fr"/>
+                </div>
+            </form>
+            <div class="right-wrap-login ud_userTox" style="right: 0">
+                <div class="unlogin ud_unlogin clearfix">
+                    <div th:if="${session.username==null}" class="login fl"><a class="user_login layui-icon" th:href="@{/login}">&#xe66f;登录</a></div>
+                    <div th:if="${session.username==null}" class="regist fl"><a class="user_register layui-icon" th:href="@{/signin}">&#xe672;注册</a></div>
+                    <div th:if="${session.username!=null}" class="shelf">
+                        <a th:href="@{/shelf}" class="layui-icon" target="_blank">&#xe705;书架</a>
+                        <a style="padding-left: 18px;" class="layui-icon" th:href="@{/logout}">&#x1006;注销</a></div>
+                </div>
+            </div>
+        </div>
+        <div style="display: none" class="nav clearfix">
+            <a class="active" th:href="@{/index}">书库<em></em></a>
+        </div>
+    </div>
+    <div class="h10-blank"></div>
+    <!-- 1.	书库头部广告位 -->
+    <div class="h20-blank"></div>
+    <!-- 书库主内容 -->
+    <!-- 顶部复选区 -->
+    <div class="bookstore_tbox">
+        <div class="bookstore_select">
+            <div class="select_con">
+                <!-- 作品分类 -->
+                <div class="kind">
+                    <div class="bz">作品分类：</div>
+                    <div class="nr br sub">
+                        <a class="current store" onclick="queryBook(0)" id="type0">全部作品</a>
+                        <a class="store" onclick="queryBook(1)" id="type1">奇幻玄幻<em></em></a>
+                        <a class="store" onclick="queryBook(2)" id="type2">武侠仙侠<em></em></a>
+                        <a class="store" onclick="queryBook(3)" id="type3">都市娱乐<em></em></a>
+                        <a class="store" onclick="queryBook(4)" id="type4">历史军事<em></em></a>
+                        <a class="store" onclick="queryBook(5)" id="type5">侦探推理<em></em></a>
+                        <a class="store" onclick="queryBook(6)" id="type6">网游动漫<em></em></a>
+                        <a class="store" onclick="queryBook(7)" id="type7">科幻灵异<em></em></a>
+                        <br>
+                    </div>
+
+                </div>
+                <!-- 写作进度 -->
+                <div class="kind">
+                    <div class="bz">写作进度：</div>
+                    <div class="nr br">
+                        <a class="current store" onclick="queryBook(8)" id="state0">全部</a>
+                        <a class="store" onclick="queryBook(9)" id="state8">连载中</a>
+                        <a class="store" onclick="queryBook(10)" id="state9">已完结</a>
+                    </div>
+                    <div class="cl0"></div>
+                </div>
+                <!-- 作品字数 -->
+                <div class="kind">
+                    <div class="bz">作品字数：</div>
+                    <div class="nr br">
+                        <a class="current store"
+                           href="javascript:void(0)">全部</a>
+                        <a class="store"
+                           href="javascript:void(0)" >30万字以下</a>
+                        <a class="store"
+                           href="javascript:void(0)" >30万-50万</a>
+                        <a class="store"
+                           href="javascript:void(0)" >50万-100万</a>
+                        <a class="store"
+                           href="javascript:void(0)" >100万-200万</a>
+                        <a class="store"
+                           href="javascript:void(0)" >200万以上</a>
+                    </div>
+                    <div class="cl0"></div>
+                </div>
+                <!-- 更新时间 -->
+                <div class="kind">
+                    <div class="bz">更新时间：</div>
+                    <div class="nr br">
+                        <a class="current store" href="javascript:void(0)" >全部</a>
+                        <a class="store" href="javascript:void(0)" >三日内</a>
+                        <a class="store" href="javascript:void(0)" >七日内</a>
+                        <a class="store" href="javascript:void(0)" >半月内</a>
+                        <a class="store" href="javascript:void(0)" >一月内</a>
+                    </div>
+                    <div class="cl0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="h15-blank"></div>
+    <!-- 下拉复选区 -->
+    <div class="bookstore_sort sort">
+        <div class="kind">
+            <div style="font-size: 18px">本站最近更新</div>
+            <div class="cl0"></div>
+        </div>
+        <div class="sort_listtype">
+            阅读模式
+            <a  id="c_digi" onclick="queryBook(11)" class="c_digi active"  ></a>
+            <a  id="l_list" onclick="queryBook(12)" class="l_list" ></a>
+        </div>
+    </div>
+
+    <!-- 书籍列表区 图文模式 -->
+    <div class="store_list_wrap">
+        <div th:if="${parameter.sort_list_type==2}" class="store_booklist">
+            <div class="con">
+                <div class="tab-head">
+                    <span class="kind">类别</span>
+                    <span class="bookname">书名</span>
+                    <span class="chap">章节</span>
+                    <span class="status">状态</span>
+                    <span class="count">总字数</span>
+                    <span class="author">作者</span>
+                    <span class="time">更新时间</span>
+                </div>
+                <ul class="main_con" >
+                    <li th:each="item,status : ${list}">
+                        <span class="kind"><a href="" th:text="${item.type}" target="_blank">[奇幻玄幻]</a></span>
+                        <span class="bookname"><a th:text="${item.fictionName}" th:href="'/fiction/chapter/info/'+${item.id}" target="_blank">少年纵马且长歌</a></span>
+                        <span class="chap"><a th:text="${item.newest}"  target="_blank">正文 第四十章，金堂主的问题</a></span>
+                        <span class="status" th:text="${item.state}">连载中</span><span th:text="${item.number}" class="count">9.7万</span>
+                        <span class="author"  th:text="${item.author}"></span>
+                        <span class="time" th:text="${#dates.format(item.createDate, 'yyyy-MM-dd HH:mm')}">12-19 11:57</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--图文区-->
+        <div class="store_collist">
+        <div th:each="item,status : ${list}" th:if="${parameter.sort_list_type==1}">
+            <div  th:class="${status.count%2==0}?'bookbox fr':'bookbox fl'" class="bookbox fl">
+                <div class="bookimg">
+                    <a th:href="'/fiction/chapter/info/'+${item.id}" target="_blank">
+                        <img th:src="${item.imgUrl}"
+                             src="http://www.shuquge.com/files/article/image/86/86786/86786s.jpg"
+                             th:alt="${item.fictionName}" alt="暗影统领的公主妻">
+                    </a>
+                </div>
+                <div class="bookinfo">
+                    <div class="bookname">
+                        <a th:text="${item.fictionName}" th:href="'/fiction/chapter/info/'+${item.id}"
+                           target="_blank">暗影统领的公主妻</a>
+                    </div>
+                    <div class="bookilnk">
+                        <a th:text="${item.author}" href="" target="_blank">白白颜卿</a>|
+                        <a th:text="${item.type}" href="" target="_blank">历史军事}</a>|
+                        <span th:text="${item.state}">
+                                连载中
+                        	</span>|
+                        <span th:text="${#dates.format(item.createDate, 'yyyy-MM-dd HH:mm')}">
+                            更新时间&nbsp;&nbsp;2019-12-14T08:08:27.000+0000
+                            </span>
+                    </div>
+                    <div th:text="${item.brief}" class="bookintro">
+                        　　颜乐蓄谋已久的逃离控制着她生活的杀手组织，孤注一掷的想摆脱成为傀儡的命运，却未曾想到那夜的转机，改变了她早已被人安排的命盘，但她又好似陷入另一个旋涡......　　云衡王朝，皇帝亲立抗暝司，寓意破除灰暗，执掌光明，凌驾于一切官府。
+                        穆凌绎身为抗暝司统领最大职责是找回王朝唯一的异姓公主，这断了十几年的线索突然再一名女刺客身上明朗了......　　爱而不得的苏祁琰，此后一生有谁能陪伴在不老的他心里呢.......　　皇宫深院，有多少事都陷进了黑暗的阴谋之中......　　江湖传说暗影却是心上之人......　　并肩疆场杀敌之后......……
+                    </div>
+                    <div class="bookupdate">
+                        <a th:text="${item.newest}" href="" class="fl">第八百二十二章 她不是你娘亲！</a>
+                        <span class="rank_d_b_time"></span>
+                    </div>
+                </div>
+            </div>
+            <div  th:if="${status.count%2==0}" class="dotline"></div>
+            </div>
+        </div>
+        <!--图文区-->
+    </div>
+    <!-- 分页 -->
+    <div style="text-align: center">
+        <div id="page"></div>
+    </div>
+    <!-- end书库主内容 -->
+</div>
+<div class="footer">
+    <div class="copyright">
+        <div class="links"><a href="" target="_blank">关于纵横</a>|
+            <a href="" target="_blank">诚聘英才</a>|
+            <a href="" target="_blank">商务合作</a>|
+            <a href="" target="_blank">法律声明</a>|
+            <a href="" target="_blank">帮助中心</a>|
+            <a href="" target="_blank">作者投稿</a>|
+            <a href="" target="_blank">联系我们</a>|
+            <a href="" target="_blank">友情链接</a>|
+            <a href="" target="_blank">谨防诈骗</a>|
+            <a href="" target="_blank">网站地图</a></div>
+        <p>Copyright©<a href="">www.zongheng.com</a>All Rights Reserved 版权所有
+            北京幻想纵横网络技术有限公司
+            <a href="" target="_blank">京ICP证080527号</a>
+            <a href="" target="_blank">京ICP备11009265号</a>
+            <a href="" target="_blank">京网文[2018]10695-962号</a></p>
+        <p>
+            <a href="" target="_blank">新出发京零字第朝130010号</a> 丨
+            统一社会信用代码91110105678221683F 丨
+            <a href="" target="_blank">京公网安备
+                11010502030124号</a> 丨
+            <a href="" target="_blank">公安部网络违法犯罪举报网站</a>
+        </p>
+        <p><a href="" target="_blank">纵横小说网</a>,提供<a
+                href="" target="_blank">玄幻小说</a>,<a href=""
+                                                    target="_blank">都市小说</a>,<a
+                href="">言情小说</a>等<a
+                href="" target="_blank">免费小说</a>阅读。作者发布小说作品时，请遵守国家互联网信息管理办法规定。
+        </p>
+        <p>本站所收录小说作品、社区话题、书库评论均属其个人行为，不代表本站立场。</p>
+    </div>
+    <input type="hidden" id="count" th:value="${parameter.count}">
+    <input type="hidden" id="limit" th:value="${parameter.limit}">
+    <input type="hidden" id="curr" th:value="${parameter.curr}">
+</div>
+<script>
+    window.onload = function () {
+        if ([[${parameter.type}]] !== 0) {
+            $("#type" +[[${parameter.type}]]).addClass("current");
+        }
+        if ([[${parameter.sort_list_type}]]===2){
+            $("#c_digi").removeClass("active");
+            $("#l_list").addClass("active");
+        }
+        if ([[${parameter.state}]] !== 0) {
+            $("#state" + [[${parameter.state}]]).addClass("current");
+        }
+    };
+
+    //layui分页
+    layui.use('laypage', function () {
+        var laypage = layui.laypage;
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'page'
+            , loading: true
+            , limits: [20, 30, 40, 50]
+            , count: [[${parameter.count}]]
+            , curr: [[${parameter.curr}]]
+            , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+            , limit: [[${parameter.limit}]]
+            , jump: function (obj, first) {
+                //obj包含了当前分页的所有参数，比如：
+                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                console.log(obj.limit); //得到每页显示的条数
+                //首次不执行
+                if (!first) {
+                    QueryByAllCondition(obj.curr, obj.limit);
+                }
+            }
+        })
+    });
+
+    function queryBook(key) {
+        let url = "";
+        switch (key) {
+            case 0:url="/fiction/index?type="+key+"&state=" + [[${parameter.state}]];
+                break;
+            case 1:url="/fiction/index?type="+key+"&state=" + [[${parameter.state}]];
+                break;
+            case 2:url="/fiction/index?type="+key+"&state=" + [[${parameter.state}]];
+                break;
+            case 3:url="/fiction/index?type="+key+"&state=" + [[${parameter.state}]];
+                break;
+            case 4:url="/fiction/index?type="+key+"&state=" + [[${parameter.state}]];
+                break;
+            case 5:url="/fiction/index?type="+key+"&state=" + [[${parameter.state}]];
+                break;
+            case 6:url="/fiction/index?type="+key+"&state=" + [[${parameter.state}]];
+                break;
+            case 7:url="/fiction/index?type="+key+"&state=" + [[${parameter.state}]];
+                break;
+            case 8:url="/fiction/index?state="+0+"&type=" + [[${parameter.type}]];
+                break;
+            case 9:url="/fiction/index?state="+8+"&type=" + [[${parameter.type}]];
+                break;
+            case 10:url="/fiction/index?state="+9+"&type=" + [[${parameter.type}]];
+                break;
+            case 11:url="/fiction/index?state="+[[${parameter.state}]]+"&type=" + [[${parameter.type}]]+"&sort_list_type=1";
+                break;
+            case 12:url="/fiction/index?state="+[[${parameter.state}]]+"&type=" + [[${parameter.type}]]+"&sort_list_type=2";
+                break;
+        }
+        window.location.href = url;
+    }
+
+    function QueryByAllCondition(curr, limit) {
+        let toUrl = "/fiction/index?curr=" + curr + "&limit=" + limit;
+        if ([[${parameter.sort_list_type}]]===2) {
+            toUrl += ("&sort_list_type=" + [[${parameter.sort_list_type}]]);
+        }
+        if ([[${parameter.type}]]!==0) {
+            toUrl += ("&type=" + [[${parameter.type}]]);
+        }
+        if ([[${parameter.state}]]!==8) {
+            toUrl += ("&state=" + [[${parameter.state}]]);
+        }
+        window.location.href = toUrl;
+    }
+</script>
+</body>
+</html>

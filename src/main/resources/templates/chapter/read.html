@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="copyright" content="本页版权 www.zongheng.com 纵横中文网所有。All Rights Reserved"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="https://static.zongheng.com/favicon.ico" />
+    <title>[[${title}]]小说_小说推荐_好看的完本免费小说推荐- 纵横中文网</title>
+    <meta name="keywords" content="夕阳渐落去阅读页,第三十四章  少女情窦开"/>
+    <meta name="description" content="纵横中文网最新更新夕阳渐落去,本章内容为第三十四章  少女情窦开的全文阅读页,夕阳渐落去最新章节免费阅读,页面无弹窗,访问速度快尽在纵横中文网。"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/basic.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reader.min.css}"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}"/>
+
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+
+    <script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>
+</head>
+<body class="rb_1">
+<div class="head-fixed-reader head-simple">
+    <div class="wrap">
+        <div class="head-top clearfix">
+            <div class="logo imgbox fl">
+                <a th:href="@{/index}"><img th:src="@{/picture/logo.png}" alt="logo" /></a>
+            </div>
+            <form id="commSearch" name="searchForm" method="get" th:action="@{/search}" target="_blank">
+                <div class="search-box fl" data-hook="searchSuggest">
+                    <label>
+                        <input class="search-text fl" name="fictionName" type="text"
+                               placeholder="请输入书名"/>
+                    </label>
+                    <input type="submit" class="search-btn fr"/>
+                </div>
+            </form>
+            <div class="right-wrap-login ud_userTox" style="right: 0">
+                <div class="unlogin ud_unlogin clearfix">
+                    <div th:if="${session.username==null}" class="login fl"><a class="user_login layui-icon" th:href="@{/login}">&#xe66f;登录</a></div>
+                    <div th:if="${session.username==null}" class="regist fl"><a class="user_register layui-icon" th:href="@{/signin}">&#xe672;注册</a></div>
+                    <div th:if="${session.username!=null}" class="shelf">
+                        <a th:href="@{/shelf}" class="layui-icon" target="_blank">&#xe705;书架</a>
+                        <a style="padding-left: 18px;" class="layui-icon" th:href="@{/logout}">&#x1006;注销</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 大包 -->
+<div class="readerPageWrap">
+    <div class="h20-blank"></div>
+    <!-- 推广层 -->
+    <div class="goodgame">
+        <a href="" target="_blank"></a>
+    </div>
+    <!-- 主内容 -->
+    <div class="rw_3" id="reader_warp">
+        <!-- 1.	阅读器头部推荐位 -->
+        <div class="com-recbox"></div>
+        <!-- 阅读页start -->
+        <!-- 包裹层 -->
+        <div  class="rft_1">
+            <!-- 内容主盒 -->
+            <div class="reader_box"  >
+                <div class="marker " ></div>
+                <div class="title">
+                    <div class="iconbox">
+                        <em class=""></em>
+                    </div>
+                    <div th:text="${chapter.chapterTitle}" class="title_txtbox"></div>
+                </div>
+                <div class="bookinfo">
+                 更新时间：<span  th:text="${#dates.format(chapter.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+                    <a th:href="'/fiction/chapter/list/'+${chapter.fictionId}" class="reader_lnkbtn" >目录</a>
+                </div>
+
+                <div class="reader_line"></div>
+                <div class="content" itemprop="acticleBody">
+                    <p  th:utext="${content.content}"></p>
+                </div>
+                <!-- 订阅盒 -->
+
+                <!-- 作者的话 -->
+
+                <!-- 捧场按钮 -->
+
+                <!-- 操作区 -->
+                <div class="chap_btnbox">
+                    <a  th:href="'/fiction/chapter/list/'+${chapter.fictionId}">目录</a>
+
+                    <a th:href="'/fiction/chapter/netRead/'+${chapter.fictionId}+'/'+${chapter.sort}+'/1'" href="javascript:void(0)">上一章</a>
+
+                    <a th:href="'/fiction/chapter/netRead/'+${chapter.fictionId}+'/'+${chapter.sort}+'/2'" href="javascript:void(0)" class="nextchapter">下一章</a>
+                </div>
+                <input id="fiction_id" type="hidden" th:value="${chapter.fictionId}"/>
+                <input id="sort" type="hidden" th:value="${chapter.sort}"/>
+                <div class="ctrl_tips">
+                    按“键盘左键←”返回上一章&nbsp;&nbsp;&nbsp;按“键盘右键→”进入下一章&nbsp;&nbsp;&nbsp;按“空格键”向下滚动
+                </div>
+            </div>
+            <!-- /内容主盒 -->
+        </div>
+        <!-- /包裹层 -->
+    </div>
+    <!-- 控制手柄 -->
+    <div class="h20-blank"></div>
+    <!-- /大包 -->
+</div>
+<script>
+    document.onkeydown=function(e){
+        let fiction_id=$("#fiction_id").val();
+        let sort=$("#sort").val();
+        e=window.event||e;
+        switch(e.keyCode){
+            case 37: //左键
+                window.location.href = "/fiction/chapter/netRead/"+fiction_id+"/"+sort+"/1";
+                break;
+            case 39: //右键
+                window.location.href = "/fiction/chapter/netRead/"+fiction_id+"/"+sort+"/2";
+                break;
+            default:
+                break;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <title>注册账户</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/signin.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}"/>
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <style>
+      .from{
+        width: 450px;
+        height: 300px;
+        margin: 5% auto 0;
+      }
+      .layui-form-label{
+        font-size: 14px;
+        color: #777;
+      }
+      .layui-btn {
+        background-color: #BF2C24;
+        color: white;
+        width: 340px;
+        height: 40px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="head">
+      <div class="reg-logo fl">
+        <a th:href="@{/index}" class="fl"><img th:src="@{picture/logo.png}" alt="logo"></a>
+      </div>
+      <div class="reg-login fr">
+        我已注册，现在就<a th:href="@{/login}" class="go-login">登录</a>
+      </div>
+    </div>
+    <div class="reg-line"></div>
+  <div class="from">
+    <form class="layui-form" action="">
+      <div class="layui-form-item">
+        <label class="layui-form-label">昵称</label>
+        <div class="layui-input-block">
+          <label>
+            <input type="text" name="username" lay-verify="required" lay-reqtext="昵称是必填项，岂能为空？" placeholder="&#xe66f; 昵称" autocomplete="off" class="layui-input layui-icon">
+          </label>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+          <label>
+            <input type="password" name="password" lay-verify="required" lay-reqtext="密码是必填项，岂能为空？" placeholder="&#xe673; 6-18位大小写字母、符号或数字" autocomplete="off" class="layui-input layui-icon">
+          </label>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">确认密码</label>
+        <div class="layui-input-block">
+          <label>
+            <input type="password" name="passwordto" lay-verify="required" lay-reqtext="密码是必填项，岂能为空？" placeholder="&#xe673; 再次输入密码" autocomplete="off" class="layui-input layui-icon">
+          </label>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit lay-filter="form">立即提交</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  </body>
+  <script>
+    layui.use(['form','layer'], function(){
+      var form = layui.form;
+      //监听提交
+      form.on('submit(form)', function(data){
+        $.ajax({
+          url: "/fiction/signinV",
+          type: "POST",
+          data: {"username": data.field.username,"password":data.field.password},
+          dataType: 'json',
+          success: function (res) {
+            if (res.status===200){
+              layer.msg(res.msg, {icon: 6});
+              window.location.href = "/fiction/login";
+            }else {
+              layer.msg(res.msg, {icon: 5});
+            }
+          }
+        });
+        return false;
+      });
+    });
+  </script>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://static.zongheng.com/favicon.ico" />
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>小说抓取</title>
+    <style>
+        a {
+            cursor: pointer;
+        }
+        th {
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">小说管理</a>
+        </div>
+    </div>
+</nav>
+<table   class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th style="width: 20%">名称</th>
+        <th>说明</th>
+        <th style="width: 30%">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>单本</td>
+        <td><input type="text" name="fiction_url" id="fiction_url" class="form-control" placeholder="请输入小说首页地址"></td>
+        <td>
+                <span class="input-group-btn">
+              <button onclick="write_fiction()" type="button" class="btn btn-warning">抓取小说</button>
+              <a class="btn btn-success" href="/fiction/index/index" target="_blank">阅读小说</a>
+         </span>
+        </td>
+    </tr>
+    <tr>
+        <td>批量</td>
+        <td><input type="text" name="fiction_urls" id="fiction_urls" class="form-control" placeholder="请输入小说首页地址"></td>
+        <td>
+              <span class="input-group-btn">
+              <button onclick="write_fictions()" type="button" class="btn btn-warning">抓取小说</button>
+              <a class="btn btn-success" href="/fiction/index/index" target="_blank">阅读小说</a>
+         </span>
+        </td>
+    </tr>
+    <tr>
+        <td>小说来源</td>
+        <td>批量抓取地址为:网站分类地址如【<a href="http://www.shuquge.com/category/1_1.html">链接</a>】/单本抓取地址为:单本详情地址如【<a href="http://www.shuquge.com/txt/5809/index.html">链接</a>】</td>
+        <td>
+             <span class="input-group-btn">
+                 <a href="http://www.shuquge.com" type="button" class="btn btn-link">前往</a>
+         </span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+<script>
+    //抓取单本小说
+    function write_fiction() {
+        var _url = $("#fiction_url").val();
+        $.ajax({
+            url: "/fiction/sys/write",
+            type: "POST",
+            data: {"fiction_url": _url},
+            dataType: 'json',
+            success: function (res) {
+                alert(res.msg);
+                this.message=res.msg;
+            }
+        })
+    }
+
+    //批量抓取小说
+    function write_fictions() {
+        var _url = $("#fiction_urls").val();
+        alert(_url);
+        $.ajax({
+            url: "/fiction/sys/writes",
+            type: "POST",
+            data: {"fiction_urls": _url},
+            dataType: 'json',
+            success: function (res) {
+                alert(res.msg);
+            }
+        })
+    }
+</script>
+</html>

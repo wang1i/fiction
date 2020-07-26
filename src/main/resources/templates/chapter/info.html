@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="copyright" content="本页版权 www.zongheng.com 纵横中文网所有。All Rights Reserved"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="https://static.zongheng.com/favicon.ico"/>
+    <title>[[${title}]]小说_小说推荐_好看的完本免费小说推荐- 纵横中文网</title>
+    <meta name="keywords" content="十月的夏天最新章节, 十月的夏天全文阅读, 是十月的小说"/>
+    <meta name="description" content="《十月的夏天》是是十月在纵横中文网原创首发的武侠仙侠, 是十月的小说十月的夏天最新章节全文阅读,请随时关注更新最快的小说网站纵横中文网。"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/basic.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/store.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/book.min.css}"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}"/>
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>
+
+</head>
+<body>
+<div class="wrap">
+    <div class="head">
+        <div class="head-top clearfix">
+            <div class="logo imgbox fl">
+                <a th:href="@{/index}"><img th:src="@{/picture/logo.png}" alt="logo"  src=""></a>
+            </div>
+            <form id="commSearch" name="searchForm" method="get" th:action="@{/search}" target="_blank">
+                <div class="search-box fl" data-hook="searchSuggest">
+                    <label>
+                        <input class="search-text fl" name="fictionName" type="text"
+                               placeholder="请输入书名"/>
+                    </label>
+                    <input type="submit" class="search-btn fr"/>
+                </div>
+            </form>
+            <div class="right-wrap-login ud_userTox" style="right: 0">
+                <div class="unlogin ud_unlogin clearfix">
+                    <div th:if="${session.username==null}" class="login fl"><a class="user_login layui-icon" th:href="@{/login}">&#xe66f;登录</a></div>
+                    <div th:if="${session.username==null}" class="regist fl"><a class="user_register layui-icon" th:href="@{/signin}">&#xe672;注册</a></div>
+                    <div th:if="${session.username!=null}" class="shelf">
+                        <a th:href="@{/shelf}" class="layui-icon" target="_blank">&#xe705;书架</a>
+                        <a style="padding-left: 18px;" class="layui-icon" th:href="@{/logout}">&#x1006;注销</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="h20-blank"></div>
+    <!-- 书封页start -->
+    <div id="container"  class="book-html-box clearfix">
+        <!-- 书籍详细信息 -->
+        <div   class="book-top clearfix">
+            <div  class="book-main fl">
+                    <div class="book-detail clearfix">
+                        <div class="book-img fl">
+                            <em class=""></em>
+                            <img th:src="${fiction.imgUrl}" src="" th:alt="${fiction.fictionName}" width="200" height="264" alt="">
+                        </div>
+                        <div class="book-info">
+                            <div th:text="${fiction.fictionName}" class="book-name">
+                            </div>
+                            <div class="book-label">
+                                <a href="" class="state" th:text="${fiction.state}" target="_blank"></a>
+                                <a href="" class="label" th:text="${fiction.type}" target="_blank"></a>
+                            </div>
+                            <div class="nums"><span>字数 <i th:text="${fiction.number}"> </i> </span>
+                                <span>总点击 <i th:text="${fiction.views}"></i> </span> <span>周推荐 <i>0</i> </span></div>
+                            <div class="book-dec Jbook-dec hide">
+                                <p th:text="${fiction.brief}"><br>　</p>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn read-btn" target="_blank" th:href="'/fiction/chapter/read/'+${fiction.id}+'/1'">开始阅读</a>
+                                <a class="btn read-btn" target="_blank" th:href="'/fiction/chapter/list/'+${fiction.id}">章节目录</a>
+                                <div th:if="${presence==0}" id="add-shelf" th:name="${fiction.id}" class="btn store-btn no-stored">
+                                    加入书架
+                                </div>
+                                <div  style="display: none"  class="btn store-btn stored">已在书架</div>
+                                <div th:if="${presence==1}"  class="btn store-btn stored">已在书架</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="book-new-chapter">
+                        <h4>最新章节</h4>
+                        <div class="tit"><a href="javascript:void(0)" th:text="${fiction.newest}" target="_blank"></a></div>
+                        <div class="time">
+                            · 1小时前<br/>
+                            · 今日更新10章
+                        </div>
+                    </div>
+            </div>
+            <div class="book-side fr">
+                <div class="book-author">
+                    <div class="au-head">
+                        <a href=""><img th:src="@{/picture/book.png}" src="" alt="是十月" width="60" height="60"></a><em>本书作家</em>
+
+                    </div>
+                    <div class="au-name"><a th:text="${fiction.author}" href=""></a>
+                    </div>
+                    <div class="au-words">
+                        <span>作品总数<i>1</i></span>
+                        <span>累计字数<i>3.9万</i></span>
+                        <span>本月更新<i>1天</i></span>
+                    </div>
+                    <div class="au-says">
+                        <h4>作者有话说</h4>
+
+                        <div class="con empty">作者大大正在奋力码字哦~~~</div>
+
+                    </div>
+                </div>
+                <div class="app-in clearfix">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="h20-blank"></div>
+    <!-- 书封end -->
+</div>
+<script>
+    layui.use(['layer'], function(){
+        //监听提交
+        $("#add-shelf").click(function () {
+        let fiction_id=$(this).attr("name");
+            $.ajax({
+                url: "/fiction/addShelf",
+                type: "POST",
+                data: {"fiction_id": fiction_id},
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status===200){
+                        $(".no-stored").hide();
+                        $(".stored").show();
+                        layer.msg(res.msg, {icon: 6});
+                    }else {
+                        layer.msg(res.msg, {icon: 5});
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
