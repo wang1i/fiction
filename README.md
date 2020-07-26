@@ -22,7 +22,7 @@ springboot+mybatisplus+jsoup+mysql
 ![阅读](./images/read.png)
 
 ### 个人书架
-![头部](./images/index-head.png)
+![头部](./images/bookshelf.png)
 
 ### 小说抓取
 ![抓取](./images/spider.png)
